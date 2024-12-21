@@ -14,8 +14,18 @@ const Products = () => {
           "https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=19?hasImages=true"
         );
 
-        setIds(data?.objectIDs.slice(0, 100));
-        console.log(ids);
+        const objectIDs = data?.objectIDs.slice(0, 100) || [];
+
+        setIds(objectIDs);
+
+        const productPromises = objectIDs.map((id) =>
+          fetchData<FetchedIdsType>(
+            `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`
+          )
+        );
+
+        const resolvedPhotos = await Promise.all(productPromises);
+        setPhotos(resolvedPhotos);
       } catch (error) {
         throw new Error(`Failed fetching products: ${error}`);
       } finally {
@@ -25,7 +35,7 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  console.log(ids);
+  console.log(photos);
 
   return (
     <ul>
