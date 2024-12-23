@@ -12,10 +12,10 @@ const Products = () => {
       setLoading(true);
       try {
         const data = await fetchData<FetchedIdsType>(
-          "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&artistOrCulture=true&q=french"
+          "https://collectionapi.metmuseum.org/public/collection/v1/search?departmentId=11&q=france"
         );
 
-        const objectIDs = data?.objectIDs.slice(0, 50) || [];
+        const objectIDs = data?.objectIDs.slice(0, 100) || [];
 
         const productPromises = objectIDs.map((id) =>
           fetchData<Photograph>(
@@ -38,7 +38,7 @@ const Products = () => {
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <ul>
+      <ol>
         {photos.map(
           (item) =>
             item.primaryImageSmall && (
@@ -48,11 +48,14 @@ const Products = () => {
                   height={300}
                   src={item.primaryImageSmall}
                 ></img>
-                <span>{item?.artistDisplayName || "Untitled author"}</span>
+                <span>{item?.artistDisplayName}</span>
+                <span>{item?.objectName}</span>
+                <span>{item?.objectDate}</span>
+                <span>{item?.culture}</span>
               </li>
             )
         )}
-      </ul>
+      </ol>
     </>
   );
 };
