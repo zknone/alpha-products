@@ -1,48 +1,59 @@
 import { useEffect, useState } from "react";
 import fetchData from "../../utils/fetchData";
-import { FetchedIdsType } from "../../type/type";
+import { FetchedIdsType, Photograph } from "../../type/type";
 
 const Products = () => {
-  const [ids, setIds] = useState<string[]>([]);
-
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState<Photograph[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
         const data = await fetchData<FetchedIdsType>(
-          "https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=19?hasImages=true"
+          "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&artistOrCulture=true&q=french"
         );
 
-        const objectIDs = data?.objectIDs.slice(0, 100) || [];
-
-        setIds(objectIDs);
+        const objectIDs = data?.objectIDs.slice(0, 50) || [];
 
         const productPromises = objectIDs.map((id) =>
-          fetchData<FetchedIdsType>(
+          fetchData<Photograph>(
             `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`
           )
         );
 
-        const resolvedPhotos = await Promise.all(productPromises);
+        const resolvedPhotos: Photograph[] = await Promise.all(productPromises);
         setPhotos(resolvedPhotos);
       } catch (error) {
-        throw new Error(`Failed fetching products: ${error}`);
+        setError(`Failed fetching products: ${error}`);
       } finally {
-        console.log("done");
+        setLoading(false);
       }
     };
     fetchProducts();
   }, []);
 
-  console.log(photos);
-
   return (
-    <ul>
-      {ids.map((item) => (
-        <li key={item}>{item}</li>
-      ))}
-    </ul>
+    <>
+      {isLoading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul>
+        {photos.map(
+          (item) =>
+            item.primaryImageSmall && (
+              <li key={item?.objectID}>
+                <img
+                  width={300}
+                  height={300}
+                  src={item.primaryImageSmall}
+                ></img>
+                <span>{item?.artistDisplayName || "Untitled author"}</span>
+              </li>
+            )
+        )}
+      </ul>
+    </>
   );
 };
 
