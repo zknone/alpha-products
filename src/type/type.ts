@@ -3,71 +3,65 @@ export type FetchedIdsType = {
   objectIDs: string[];
 };
 
-export type Constituents = {
-  constituentID: number;
-  constituentULAN_URL: string | null;
-  constituentWikidata_URL: string | null;
-  gender: string | null;
-  name: string;
-  role: string;
+export type Artwork = {
+  artistDisplay: string;
+  categoryTitles: string[];
+  classificationTitles: string[];
+  dateDisplay: string;
+  description: string;
+  id: number;
+  imageId: string;
+  mainReferenceNumber: string;
+  thumbnail: {
+    lqip: string;
+    width: number;
+    height: number;
+    altText: string;
+  };
+  title: string;
 };
 
-export type Photograph = {
-  GalleryNumber: string;
-  accessionNumber: string;
-  accessionYear: string;
-  additionalImages: string[];
-  artistAlphaSort: string;
-  artistBeginDate: string | null;
-  artistDisplayBio: string;
-  artistDisplayName: string;
-  artistEndDate: string | null;
-  artistGender: string | null;
-  artistNationality: string;
-  artistPrefix: string | null;
-  artistRole: string;
-  artistSuffix: string | null;
-  artistULAN_URL: string | null;
-  artistWikidata_URL: string | null;
-  city: string | null;
-  classification: string;
-  constituents: { [key: string]: Constituents }[];
-  country: string | null;
-  county: string | null;
-  creditLine: string;
-  culture: string | null;
-  department: string;
-  dimensions: string | null;
-  dynasty: string | null;
-  excavation: string | null;
-  geographyType: string | null;
-  isHighlight: boolean;
-  isPublicDomain: boolean;
-  isTimelineWork: boolean;
-  linkResource: string | null;
-  locale: string | null;
-  locus: string | null;
-  measurements: string | null | null;
-  medium: string;
-  metadataDate: string;
-  objectBeginDate: number;
-  objectDate: string;
-  objectEndDate: number;
-  objectID: number;
-  objectName: string;
-  objectURL: string;
-  objectWikidata_URL: string | null;
-  period: string | null;
-  portfolio: string | null;
-  primaryImage: string | null;
-  primaryImageSmall: string | null;
-  region: string | null;
-  reign: string | null;
-  repository: string;
-  rightsAndReproduction: string | null;
-  river: string | null;
-  state: string | null;
-  subregion: string | null;
-  tags: string[] | null;
+export type RawArtwork = {
+  id: number;
   title: string;
+  thumbnail: {
+    lqip: string;
+    width: number;
+    height: number;
+    alt_text: string;
+  };
+  main_reference_number: string;
+  date_display: string;
+  artist_display: string;
+  description: string;
+  category_titles: string[];
+  classification_titles: string[];
+  image_id: string;
+};
+
+export type RawConfig = {
+  iiif_url: string;
+  website_url: string;
+};
+
+export type RawInfo = {
+  license_text: string;
+  license_links: string[];
+  version: string;
+};
+
+export type RawPagination = {
+  total: number;
+  limit: number;
+  offset: number;
+  total_pages: number;
+  current_page: number;
+  next_url?: string;
+};
+
+export type RawApiResponse = {
+  config: RawConfig;
+  info: RawInfo;
+  pagination: RawPagination;
+  data: RawArtwork[];
 };
