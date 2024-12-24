@@ -1,39 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProductsStart,
+  fetchProductsSuccess,
+  fetchProductsFailure,
+} from "../../reducers/products/productsSlice";
 import fetchData from "../../utils/fetchData";
-import { Artwork, RawApiResponse } from "../../type/type";
+import { ProductsState, RawApiResponse } from "../../type/type";
 import { adaptArtwork } from "../../utils/artworkAdapter";
+import { RootState } from "../../store";
+import DOMPurify from "dompurify";
 
 const Products = () => {
-  const [photos, setPhotos] = useState<Artwork[]>([]);
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { photos, isLoading, error } = useSelector(
+    (state: RootState): ProductsState => state.products
+  );
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
+      dispatch(fetchProductsStart());
       try {
         const data = await fetchData<RawApiResponse>(
           "https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number,image_id,category_titles,classification_titles,thumbnail,description&limit=100"
         );
 
         const transformedData = data.data.map(adaptArtwork);
-        setPhotos(transformedData);
+        dispatch(fetchProductsSuccess(transformedData));
       } catch (error) {
-        setError(`Failed fetching products: ${error}`);
-      } finally {
-        setLoading(false);
+        dispatch(fetchProductsFailure(`Failed fetching products: ${error}`));
       }
     };
     fetchProducts();
-  }, []);
-
-  console.log(photos);
+  }, [dispatch]);
 
   return (
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <ol></ol>
+      <ol>
+        {photos.map((item) => (
+          <li key={item.id}>
+            <button>В избранное</button>
+            <button>Удалить</button>
+            <span> {item.title}</span>
+            <span> {item.artistDisplay}</span>
+            <img
+              src={`https://www.artic.edu/iiif/2/${item.imageId}/full/400,/0/default.jpg`}
+            ></img>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(item.description),
+              }}
+            />
+          </li>
+        ))}
+      </ol>
     </>
   );
 };

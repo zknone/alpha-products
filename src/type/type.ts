@@ -65,3 +65,9 @@ export type RawApiResponse = {
   pagination: RawPagination;
   data: RawArtwork[];
 };
+
+export type ProductsState = {
+  photos: Artwork[];
+  isLoading: boolean;
+  error: string | null;
+};
