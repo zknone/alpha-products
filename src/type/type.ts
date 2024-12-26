@@ -67,7 +67,9 @@ export type RawApiResponse = {
 };
 
 export type ProductsState = {
-  photos: Artwork[];
+  artworks: Artwork[];
   isLoading: boolean;
   error: string | null;
+  favoriteArtworks: number[];
+  filter: "All" | "Favorites";
 };
