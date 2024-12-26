@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 
 import Products from "./pages/products/products";
-import ProductDetails from "./pages/productDetails/productDetails";
-import Form from "./pages/createProduct/createProduct";
+import ProductDetails from "./pages/product-details/product-details";
+import Form from "./pages/createProduct/create-product";
 
 export const AppRoutes = () => (
   <Router>

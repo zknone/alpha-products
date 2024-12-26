@@ -4,22 +4,23 @@ import {
   fetchProductsStart,
   fetchProductsSuccess,
   fetchProductsFailure,
-  toggleFavorites,
-  deletePost,
-  setFilter,
-} from "../../reducers/products/productsSlice";
-import fetchData from "../../utils/fetchData";
+} from "../../reducers/products/products-slice";
+import fetchData from "../../utils/fetch-data";
 import { ProductsState, RawApiResponse } from "../../type/type";
 import { adaptArtwork } from "../../utils/artworkAdapter";
 import { RootState } from "../../store";
 import DOMPurify from "dompurify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { getImage, isFavorite, isFavoritesEmpty } from "../../utils/common";
+import { useProductHandlers } from "../../utils/handlers";
 
 const Products = () => {
   const dispatch = useDispatch();
   const { isLoading, error, favoriteArtworks } = useSelector(
     (state: RootState): ProductsState => state.products
   );
+  const { handleFavorites, handleDelete, handleFiltered, handleNavigate } =
+    useProductHandlers();
 
   const filteredContent = useSelector((state: RootState) => {
     const { artworks, favoriteArtworks, filter } = state.products;
@@ -49,34 +50,6 @@ const Products = () => {
     };
     fetchProducts();
   }, [dispatch]);
-
-  const isFavorited = (id: number) => {
-    return favoriteArtworks.includes(id);
-  };
-
-  const handleFavorites = (id: number) => {
-    dispatch(toggleFavorites(id));
-  };
-
-  const handleDelete = (id: number) => {
-    dispatch(deletePost(id));
-  };
-
-  const handleFiltered = (e) => {
-    dispatch(setFilter(e.target.value));
-  };
-
-  const isFavoritesEmpty = (favorites: number[]) => {
-    return favorites.length === 0;
-  };
-
-  const navigate = useNavigate();
-
-  const handleNavigate = (id: number) => {
-    navigate(`/products/${id}`);
-  };
-
-  console.log(filteredContent);
   return (
     <>
       {isLoading && <p>Loading...</p>}
@@ -88,15 +61,12 @@ const Products = () => {
       </ul>
       <ul>
         <li>
-          <button onClick={handleFiltered} value={"All"}>
-            All
-          </button>
+          <button onClick={() => handleFiltered("All")}>All</button>
         </li>
         <li>
           <button
             disabled={isFavoritesEmpty(favoriteArtworks)}
-            onClick={handleFiltered}
-            value={"Favorites"}
+            onClick={() => handleFiltered("Favorites")}
           >
             Favorites
           </button>
@@ -113,7 +83,9 @@ const Products = () => {
                 handleFavorites(item.id);
               }}
             >
-              {isFavorited(item.id) ? "Убрать из избранного" : "В избранное"}
+              {isFavorite(favoriteArtworks, item.id)
+                ? "Убрать из избранного"
+                : "В избранное"}
             </button>
             <button
               onClick={(e) => {
@@ -125,9 +97,7 @@ const Products = () => {
             </button>
             <span> {item.title}</span>
             <span> {item.artistDisplay}</span>
-            <img
-              src={`https://www.artic.edu/iiif/2/${item.imageId}/full/400,/0/default.jpg`}
-            />
+            <img src={getImage(item.imageId)} alt={item.thumbnail.altText} />
             <div
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(item.description),

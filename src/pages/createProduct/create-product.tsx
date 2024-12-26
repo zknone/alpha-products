@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Artwork } from "../../type/type";
-import { addPost } from "../../reducers/products/productsSlice";
-import ArtworkForm from "../../components/artworkForm/artworkForm";
+import { addPost } from "../../reducers/products/products-slice";
+import ArtworkForm from "../../components/artwork-form/artwork-form";
 
 const Form = () => {
   const dispatch = useDispatch();

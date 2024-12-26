@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Artwork } from "../../type/type";
+import { getImage } from "../../utils/common";
+import styles from "./artwork-form.module.css";
 
 const DEFAULT_IMG_ID = "baba4a4e-ca86-7e95-915d-25c352fc3571";
 
@@ -80,11 +82,9 @@ const ArtworkForm = ({ onSubmit }: { onSubmit: (data: Artwork) => void }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles.container} onSubmit={handleSubmit}>
       <h2>Добавить Artwork</h2>
-      <img
-        src={`https://www.artic.edu/iiif/2/${DEFAULT_IMG_ID}/full/400,/0/default.jpg`}
-      />
+      <img src={getImage(DEFAULT_IMG_ID)} />
       <label>
         Title:
         <input
