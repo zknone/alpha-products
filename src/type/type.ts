@@ -73,3 +73,5 @@ export type ProductsState = {
   favoriteArtworks: number[];
   filter: "All" | "Favorites";
 };
+
+export type FilterCategory = "All" | "Favorites";
