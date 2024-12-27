@@ -18,21 +18,28 @@ const ProductDetails = () => {
   return (
     <>
       {artwork ? (
-        <div className={styles.container}>
+        <div className={styles.product_details_container}>
           <img
-            width={400}
-            src={getImage(artwork.imageId)}
+            className={styles.product_details_image}
+            src={getImage(artwork.imageId, 700)}
             alt={artwork.thumbnail.altText}
           />
-          <h2>{artwork.title}</h2>
+          <title className={styles.product_details_title}>
+            {artwork.title}
+          </title>
           <div
+            className={styles.product_details_description}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(artwork.description),
             }}
           />
-          <p>Дата создания: {artwork.dateDisplay || "Неизвестно"}</p>
-          <p>Категории: {artwork.categoryTitles.join(", ") || "Не указаны"}</p>
-          <p>
+          <p className={styles.product_details_text}>
+            Дата создания: {artwork.dateDisplay || "Неизвестно"}
+          </p>
+          <p className={styles.product_details_p}>
+            Категории: {artwork.categoryTitles.join(", ") || "Не указаны"}
+          </p>
+          <p className={styles.product_details_p}>
             Классификация:{" "}
             {artwork.classificationTitles.join(", ") || "Не указана"}
           </p>
