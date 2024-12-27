@@ -7,7 +7,7 @@ import {
 
 import Products from "./pages/products/products";
 import ProductDetails from "./pages/product-details/product-details";
-import Form from "./pages/createProduct/create-product";
+import Form from "./pages/create-product/create-product";
 
 export const AppRoutes = () => (
   <Router>

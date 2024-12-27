@@ -10,13 +10,12 @@ import fetchData from "../../utils/fetch-data";
 import { ProductsState, RawApiResponse } from "../../type/type";
 import { adaptArtwork } from "../../utils/artworkAdapter";
 import { RootState } from "../../store";
-
-import { Link } from "react-router-dom";
-import { isFavoritesEmpty } from "../../utils/common";
 import { useProductHandlers } from "../../utils/productHandlers";
 import usePaginationHandlers from "../../utils/paginationHandler";
-import ArtworkItem from "../../components/artwork-item/product-item";
+import ArtworkItem from "../../components/product-item/product-item";
 import style from "./products.module.css";
+import ProductsMenu from "../../components/products-menu/products-menu";
+import ProductPagination from "../../components/produtc-pagination/product-pagination";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -60,40 +59,21 @@ const Products = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
+  console.log(favoriteArtworks);
+
   return (
     <div className={style.products_container}>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <ul>
-        <li>
-          <Link to={"/create-product"}>Add new one</Link>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <button onClick={() => handleFiltered("All")}>All</button>
-        </li>
-        <li>
-          <button
-            disabled={isFavoritesEmpty(favoriteArtworks)}
-            onClick={() => handleFiltered("Favorites")}
-          >
-            Favorites
-          </button>
-        </li>
-      </ul>
-
-      <div>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Назад
-        </button>
-        <span>
-          {currentPage} / {totalPages}
-        </span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Вперед
-        </button>
-      </div>
-
+      <ProductsMenu
+        handleFiltered={handleFiltered}
+        favoriteArtworks={favoriteArtworks}
+      />
+      <ProductPagination
+        handleNextPage={handleNextPage}
+        handlePrevPage={handlePrevPage}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
       <ul className={style.products_list}>
         {paginatedItems.map((item) => (
           <ArtworkItem
