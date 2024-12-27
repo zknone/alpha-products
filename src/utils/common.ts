@@ -9,3 +9,8 @@ export const isFavorite = (artworks: number[], id: number) => {
 export const isFavoritesEmpty = (favorites: number[]) => {
   return favorites.length === 0;
 };
+
+export const stripHtml = (html: string): string => {
+  const match = html.match(/<p>(.*?)<\/p>/i);
+  return match ? match[1].replace(/<\/?[^>]+(>|$)/g, "") : "";
+};

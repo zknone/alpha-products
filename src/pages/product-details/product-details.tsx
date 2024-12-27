@@ -30,6 +30,12 @@ const ProductDetails = () => {
               __html: DOMPurify.sanitize(artwork.description),
             }}
           />
+          <p>Дата создания: {artwork.dateDisplay || "Неизвестно"}</p>
+          <p>Категории: {artwork.categoryTitles.join(", ") || "Не указаны"}</p>
+          <p>
+            Классификация:{" "}
+            {artwork.classificationTitles.join(", ") || "Не указана"}
+          </p>
         </div>
       ) : (
         <>
