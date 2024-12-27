@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { RootState } from "../../store";
 import { getImage } from "../../utils/common";
 import DOMPurify from "dompurify";
@@ -24,25 +24,37 @@ const ProductDetails = () => {
             src={getImage(artwork.imageId, 700)}
             alt={artwork.thumbnail.altText}
           />
-          <title className={styles.product_details_title}>
-            {artwork.title}
-          </title>
+          <h2 className={styles.product_details_title}>
+            {artwork.title}, {artwork.dateDisplay || ""}
+          </h2>
+          <h3 className={styles.product_details_subtitle}>
+            {artwork.artistDisplay}
+          </h3>
           <div
             className={styles.product_details_description}
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(artwork.description),
+              __html: DOMPurify.sanitize(
+                artwork.description || "The description will be added soon."
+              ),
             }}
           />
-          <p className={styles.product_details_text}>
-            Дата создания: {artwork.dateDisplay || "Неизвестно"}
-          </p>
-          <p className={styles.product_details_p}>
-            Категории: {artwork.categoryTitles.join(", ") || "Не указаны"}
-          </p>
-          <p className={styles.product_details_p}>
-            Классификация:{" "}
-            {artwork.classificationTitles.join(", ") || "Не указана"}
-          </p>
+          <ul className={styles.product_categories}>
+            {artwork.categoryTitles.map((item) => (
+              <li className={styles.products_category}>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <ul className={styles.product_categories}>
+            {artwork.classificationTitles.map((item) => (
+              <li className={styles.products_classification}>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <Link className={styles.products_link} to="/products">
+            Go back
+          </Link>
         </div>
       ) : (
         <>
