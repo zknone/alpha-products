@@ -33,7 +33,7 @@
   gap: 8px;
 }
 
-.product_btn {
+.product_button {
   background-color: #F5F5F5;
   border: none;
   border-radius: 5px;
@@ -42,7 +42,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.product_btn:hover {
+.product_button:hover {
   background-color: #DCDCDC; 
   transform: scale(1.05);
 }

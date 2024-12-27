@@ -25,7 +25,7 @@ const ArtworkItem = ({
     >
       <div className={style.product_actions}>
         <button
-          className={style.product_btn}
+          className={style.product_button}
           onClick={(e) => {
             e.stopPropagation();
             handleFavorites(artwork.id);
@@ -41,17 +41,17 @@ const ArtworkItem = ({
             e.stopPropagation();
             handleDelete(artwork.id);
           }}
-          className={style.product_btn}
+          className={style.product_button}
         >
-          Удалить
+          Delete
         </button>
       </div>
       <h3 className={style.product_title}>{artwork.title}</h3>
       <p className={style.product_artist}>
-        {artwork.artistDisplay || "Автор не указан"}
+        {artwork.artistDisplay || "Author unknown"}
       </p>
       <img
-        src={getImage(artwork.imageId)}
+        src={getImage(artwork.imageId, 400)}
         alt={artwork.thumbnail.altText}
         className={style.product_image}
       />
