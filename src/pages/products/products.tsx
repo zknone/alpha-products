@@ -15,11 +15,11 @@ import usePaginationHandlers from "../../utils/paginationHandler";
 import ArtworkItem from "../../components/product-item/product-item";
 import style from "./products.module.css";
 import ProductsMenu from "../../components/products-menu/products-menu";
-import ProductPagination from "../../components/produtc-pagination/product-pagination";
+import ProductPagination from "../../components/product-pagination/product-pagination";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, favoriteArtworks } = useSelector(
+  const { isLoading, error, favoriteArtworks, artworks, filter } = useSelector(
     (state: RootState): ProductsState => state.products
   );
   const { handleFavorites, handleDelete, handleFiltered, handleNavigate } =
@@ -38,6 +38,7 @@ const Products = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (artworks && artworks.length > 0) return;
       dispatch(fetchProductsStart());
       try {
         const data = await fetchData<RawApiResponse>(
@@ -51,7 +52,7 @@ const Products = () => {
       }
     };
     fetchProducts();
-  }, [dispatch]);
+  }, [artworks, dispatch]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -67,6 +68,7 @@ const Products = () => {
       <ProductsMenu
         handleFiltered={handleFiltered}
         favoriteArtworks={favoriteArtworks}
+        filter={filter}
       />
       <ProductPagination
         handleNextPage={handleNextPage}
