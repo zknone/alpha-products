@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProductsState, Artwork } from "../../type/type";
+import { RootState } from "../../store";
 
 const initialState: ProductsState = {
   artworks: JSON.parse(localStorage.getItem("artworks") || "[]"),
@@ -44,7 +45,6 @@ const productsSlice = createSlice({
     },
     deletePost(state, action: PayloadAction<number>) {
       const id = action.payload;
-
       state.artworks = [...state.artworks.filter((item) => item.id !== id)];
     },
     addPost(state, action: PayloadAction<Artwork>) {
@@ -57,10 +57,22 @@ const productsSlice = createSlice({
       if (state.filter !== filter) {
         state.filter = filter;
       }
-      localStorage.setItem("artworks", JSON.stringify(state.artworks));
+      localStorage.setItem("filter", filter);
     },
   },
 });
+
+export const selectFilteredArtworks = (state: RootState) => {
+  const { artworks, favoriteArtworks, filter } = state.products;
+  switch (filter) {
+    case "All":
+      return artworks;
+    case "Favorites":
+      return artworks.filter((item) => favoriteArtworks.includes(item.id));
+    default:
+      return [];
+  }
+};
 
 export const {
   toggleFavorites,

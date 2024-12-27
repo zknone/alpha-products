@@ -4,15 +4,19 @@ import {
   fetchProductsStart,
   fetchProductsSuccess,
   fetchProductsFailure,
+  selectFilteredArtworks,
 } from "../../reducers/products/products-slice";
 import fetchData from "../../utils/fetch-data";
 import { ProductsState, RawApiResponse } from "../../type/type";
 import { adaptArtwork } from "../../utils/artworkAdapter";
 import { RootState } from "../../store";
-import DOMPurify from "dompurify";
+
 import { Link } from "react-router-dom";
-import { getImage, isFavorite, isFavoritesEmpty } from "../../utils/common";
-import { useProductHandlers } from "../../utils/handlers";
+import { isFavoritesEmpty } from "../../utils/common";
+import { useProductHandlers } from "../../utils/productHandlers";
+import usePaginationHandlers from "../../utils/paginationHandler";
+import ArtworkItem from "../../components/artwork-item/product-item";
+import style from "./products.module.css";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -22,17 +26,16 @@ const Products = () => {
   const { handleFavorites, handleDelete, handleFiltered, handleNavigate } =
     useProductHandlers();
 
-  const filteredContent = useSelector((state: RootState) => {
-    const { artworks, favoriteArtworks, filter } = state.products;
-    switch (filter) {
-      case "All":
-        return artworks;
-      case "Favorites":
-        return artworks.filter((item) => favoriteArtworks.includes(item.id));
-      default:
-        return [];
-    }
-  });
+  const filteredContent = useSelector(selectFilteredArtworks);
+
+  const {
+    setCurrentPage,
+    currentPage,
+    totalPages,
+    paginatedItems,
+    handlePrevPage,
+    handleNextPage,
+  } = usePaginationHandlers(filteredContent, 10);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,9 +53,15 @@ const Products = () => {
     };
     fetchProducts();
   }, [dispatch]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [setCurrentPage, filteredContent]);
+
+  if (isLoading) return <p>Loading...</p>;
+
   return (
-    <>
-      {isLoading && <p>Loading...</p>}
+    <div className={style.products_container}>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <ul>
         <li>
@@ -73,40 +82,30 @@ const Products = () => {
         </li>
       </ul>
 
-      <ul>
-        {filteredContent.map((item) => (
-          <li key={item.id} onClick={() => handleNavigate(item.id)}>
-            <span>{item.id}</span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleFavorites(item.id);
-              }}
-            >
-              {isFavorite(favoriteArtworks, item.id)
-                ? "Убрать из избранного"
-                : "В избранное"}
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(item.id);
-              }}
-            >
-              Удалить
-            </button>
-            <span> {item.title}</span>
-            <span> {item.artistDisplay}</span>
-            <img src={getImage(item.imageId)} alt={item.thumbnail.altText} />
-            <div
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(item.description),
-              }}
-            />
-          </li>
+      <div>
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Назад
+        </button>
+        <span>
+          {currentPage} / {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Вперед
+        </button>
+      </div>
+
+      <ul className={style.products_list}>
+        {paginatedItems.map((item) => (
+          <ArtworkItem
+            artwork={item}
+            handleDelete={handleDelete}
+            handleNavigate={handleNavigate}
+            handleFavorites={handleFavorites}
+            favoriteArtworks={favoriteArtworks}
+          />
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 
