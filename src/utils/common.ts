@@ -1,5 +1,5 @@
-export const getImage = (id: string) => {
-  return `https://www.artic.edu/iiif/2/${id}/full/400,/0/default.jpg`;
+export const getImage = (id: string, width: number) => {
+  return `https://www.artic.edu/iiif/2/${id}/full/${width},/0/default.jpg`;
 };
 
 export const isFavorite = (artworks: number[], id: number) => {
