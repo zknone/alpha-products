@@ -1,3 +1,4 @@
+import DeleteIcon from "../../assets/deleteIcon";
 import StarIcon from "../../assets/starIcon";
 import { Artwork } from "../../type/type";
 import { getImage, isFavorite, stripHtml } from "../../utils/common";
@@ -43,7 +44,7 @@ const ArtworkItem = ({
           }}
           className={style.product_button}
         >
-          Delete
+          <DeleteIcon size={25} />
         </button>
       </div>
       <h3 className={style.product_title}>{artwork.title}</h3>
