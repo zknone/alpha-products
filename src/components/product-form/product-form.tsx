@@ -5,22 +5,24 @@ import styles from "./product-form.module.css";
 
 const DEFAULT_IMG_ID = "baba4a4e-ca86-7e95-915d-25c352fc3571";
 
+const INITIAL_FORM_STATE: Omit<Artwork, "id" | "imageId"> = {
+  artistDisplay: "",
+  categoryTitles: [],
+  classificationTitles: [],
+  dateDisplay: "",
+  description: "",
+  mainReferenceNumber: "",
+  thumbnail: {
+    lqip: "",
+    width: 0,
+    height: 0,
+    altText: "",
+  },
+  title: "",
+};
+
 const ArtworkForm = ({ onSubmit }: { onSubmit: (data: Artwork) => void }) => {
-  const [formState, setFormState] = useState<Omit<Artwork, "id" | "imageId">>({
-    artistDisplay: "",
-    categoryTitles: [],
-    classificationTitles: [],
-    dateDisplay: "",
-    description: "",
-    mainReferenceNumber: "",
-    thumbnail: {
-      lqip: "",
-      width: 0,
-      height: 0,
-      altText: "",
-    },
-    title: "",
-  });
+  const [formState, setFormState] = useState({ ...INITIAL_FORM_STATE });
 
   const generateRandomId = () => Math.floor(Math.random() * 100_000);
 
@@ -42,21 +44,7 @@ const ArtworkForm = ({ onSubmit }: { onSubmit: (data: Artwork) => void }) => {
       imageId: DEFAULT_IMG_ID,
     };
     onSubmit(newArtwork);
-    setFormState({
-      artistDisplay: "",
-      categoryTitles: [],
-      classificationTitles: [],
-      dateDisplay: "",
-      description: "",
-      mainReferenceNumber: "",
-      thumbnail: {
-        lqip: "",
-        width: 0,
-        height: 0,
-        altText: "",
-      },
-      title: "",
-    });
+    setFormState({ ...INITIAL_FORM_STATE });
   };
 
   return (
