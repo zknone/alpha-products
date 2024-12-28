@@ -5,15 +5,17 @@ import {
   Navigate,
 } from "react-router-dom";
 
-const Products = () => <div>Home Page</div>;
-const About = () => <div>About Page</div>;
+import Products from "./pages/products/products";
+import ProductDetails from "./pages/product-details/product-details";
+import Form from "./pages/create-product/create-product";
 
 export const AppRoutes = () => (
   <Router>
     <Routes>
       <Route path="/" element={<Navigate to="/products" />} />
+      <Route path="/products/:productId" element={<ProductDetails />} />
+      <Route path="/create-product" element={<Form />} />
       <Route path="/products" element={<Products />} />
-      <Route path="/about" element={<About />} />
     </Routes>
   </Router>
 );
