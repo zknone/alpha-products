@@ -14,3 +14,5 @@ export const stripHtml = (html: string): string => {
   const match = html.match(/<p>(.*?)<\/p>/i);
   return match ? match[1].replace(/<\/?[^>]+(>|$)/g, "") : "";
 };
+
+export const generateRandomId = () => Math.floor(Math.random() * 100_000);
