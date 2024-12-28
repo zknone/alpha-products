@@ -15,52 +15,50 @@ const ProductDetails = () => {
     } else return null;
   });
 
+  if (!artwork) {
+    return <h2>Такая страница отсутствует</h2>;
+  }
+
   return (
     <>
-      {artwork ? (
-        <div className={styles.product_details_container}>
-          <img
-            className={styles.product_details_image}
-            src={getImage(artwork.imageId, 700)}
-            alt={artwork.thumbnail.altText}
-          />
-          <h2 className={styles.product_details_title}>
-            {artwork.title}, {artwork.dateDisplay || ""}
-          </h2>
-          <h3 className={styles.product_details_subtitle}>
-            {artwork.artistDisplay}
-          </h3>
-          <div
-            className={styles.product_details_description}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(
-                artwork.description || "The description will be added soon."
-              ),
-            }}
-          />
-          <ul className={styles.product_categories}>
-            {artwork.categoryTitles.map((item) => (
-              <li className={styles.products_category}>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <ul className={styles.product_categories}>
-            {artwork.classificationTitles.map((item) => (
-              <li className={styles.products_classification}>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <Link className={styles.products_link} to="/products">
-            Go back
-          </Link>
-        </div>
-      ) : (
-        <>
-          <h2>Такая страница отсутствует</h2>
-        </>
-      )}
+      <div className={styles.product_details_container}>
+        <img
+          className={styles.product_details_image}
+          src={getImage(artwork.imageId, 700)}
+          alt={artwork.thumbnail.altText}
+        />
+        <h2 className={styles.product_details_title}>
+          {artwork.title}, {artwork.dateDisplay || ""}
+        </h2>
+        <h3 className={styles.product_details_subtitle}>
+          {artwork.artistDisplay}
+        </h3>
+        <div
+          className={styles.product_details_description}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              artwork.description || "The description will be added soon."
+            ),
+          }}
+        />
+        <ul className={styles.product_categories}>
+          {artwork.categoryTitles.map((item) => (
+            <li className={styles.products_category}>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <ul className={styles.product_categories}>
+          {artwork.classificationTitles.map((item) => (
+            <li className={styles.products_classification}>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <Link className={styles.products_link} to="/products">
+          Go back
+        </Link>
+      </div>
     </>
   );
 };
