@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductsState, Artwork } from "../../type/type";
+import { ProductsState, Product, FilterCategory } from "../../type/type";
 import { RootState } from "../../store";
 
 const initialState: ProductsState = {
@@ -9,7 +9,7 @@ const initialState: ProductsState = {
   favoriteArtworks: JSON.parse(
     localStorage.getItem("favoriteArtworks") || "[]"
   ),
-  filter: (localStorage.getItem("filter") as "All" | "Favorites") || "All",
+  filter: (localStorage.getItem("filter") as FilterCategory) || "All",
 };
 
 const productsSlice = createSlice({
@@ -20,7 +20,7 @@ const productsSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    fetchProductsSuccess(state, action: PayloadAction<Artwork[]>) {
+    fetchProductsSuccess(state, action: PayloadAction<Product[]>) {
       state.isLoading = false;
       state.artworks = action.payload;
       localStorage.setItem("artworks", JSON.stringify(state.artworks));
@@ -47,12 +47,12 @@ const productsSlice = createSlice({
       const id = action.payload;
       state.artworks = [...state.artworks.filter((item) => item.id !== id)];
     },
-    addPost(state, action: PayloadAction<Artwork>) {
+    addPost(state, action: PayloadAction<Product>) {
       const newArtWork = action.payload;
       state.artworks = [...state.artworks, newArtWork];
       localStorage.setItem("artworks", JSON.stringify(state.artworks));
     },
-    setFilter(state, action: PayloadAction<"All" | "Favorites">) {
+    setFilter(state, action: PayloadAction<FilterCategory>) {
       const filter = action.payload;
       if (state.filter !== filter) {
         state.filter = filter;

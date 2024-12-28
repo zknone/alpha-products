@@ -16,7 +16,7 @@ const ProductDetails = () => {
   });
 
   if (!artwork) {
-    return <h2>Такая страница отсутствует</h2>;
+    return <h2>This page doesn't exist</h2>;
   }
 
   return (

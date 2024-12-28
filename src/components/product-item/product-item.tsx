@@ -1,10 +1,10 @@
 import DeleteIcon from "../../assets/deleteIcon";
 import StarIcon from "../../assets/starIcon";
-import { Artwork } from "../../type/type";
+import { Product } from "../../type/type";
 import { getImage, isFavorite, stripHtml } from "../../utils/common";
 import style from "./product-item.module.css";
 
-const ArtworkItem = ({
+const ProductItem = ({
   handleNavigate,
   handleFavorites,
   handleDelete,
@@ -15,7 +15,7 @@ const ArtworkItem = ({
   handleFavorites: (id: number) => void;
   handleDelete: (id: number) => void;
   favoriteArtworks: number[];
-  artwork: Artwork;
+  artwork: Product;
 }) => {
   const cleanDescription = stripHtml(artwork.description || "");
   return (
@@ -63,4 +63,4 @@ const ArtworkItem = ({
   );
 };
 
-export default ArtworkItem;
+export default ProductItem;

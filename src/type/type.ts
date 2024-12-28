@@ -3,7 +3,7 @@ export type FetchedIdsType = {
   objectIDs: string[];
 };
 
-export type Artwork = {
+export type Product = {
   artistDisplay: string;
   categoryTitles: string[];
   classificationTitles: string[];
@@ -21,7 +21,7 @@ export type Artwork = {
   title: string;
 };
 
-export type RawArtwork = {
+export type RawProduct = {
   id: number;
   title: string;
   thumbnail: {
@@ -63,15 +63,15 @@ export type RawApiResponse = {
   config: RawConfig;
   info: RawInfo;
   pagination: RawPagination;
-  data: RawArtwork[];
+  data: RawProduct[];
 };
 
 export type ProductsState = {
-  artworks: Artwork[];
+  artworks: Product[];
   isLoading: boolean;
   error: string | null;
   favoriteArtworks: number[];
-  filter: "All" | "Favorites";
+  filter: FilterCategory;
 };
 
 export type FilterCategory = "All" | "Favorites";

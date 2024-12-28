@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Artwork } from "../../type/type";
+import { Product } from "../../type/type";
 import { generateRandomId, getImage } from "../../utils/common";
 import styles from "./product-form.module.css";
 import { validateForm } from "../../utils/validate";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const DEFAULT_IMG_ID = "baba4a4e-ca86-7e95-915d-25c352fc3571";
 
-const INITIAL_FORM_STATE: Omit<Artwork, "id" | "imageId"> = {
+const INITIAL_FORM_STATE: Omit<Product, "id" | "imageId"> = {
   artistDisplay: "",
   categoryTitles: [],
   classificationTitles: [],
@@ -23,9 +23,9 @@ const INITIAL_FORM_STATE: Omit<Artwork, "id" | "imageId"> = {
   title: "",
 };
 
-const ArtworkForm = ({ onSubmit }: { onSubmit: (data: Artwork) => void }) => {
+const ArtworkForm = ({ onSubmit }: { onSubmit: (data: Product) => void }) => {
   const navigate = useNavigate();
-  const [formState, setFormState] = useState<Omit<Artwork, "id" | "imageId">>({
+  const [formState, setFormState] = useState<Omit<Product, "id" | "imageId">>({
     ...INITIAL_FORM_STATE,
   });
   const [errors, setErrors] = useState<
@@ -56,7 +56,7 @@ const ArtworkForm = ({ onSubmit }: { onSubmit: (data: Artwork) => void }) => {
       return;
     }
 
-    const newArtwork: Artwork = {
+    const newArtwork: Product = {
       ...formState,
       id: generateRandomId(),
       imageId: DEFAULT_IMG_ID,

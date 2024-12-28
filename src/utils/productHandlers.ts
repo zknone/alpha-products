@@ -5,6 +5,7 @@ import {
   setFilter,
   toggleFavorites,
 } from "../reducers/products/products-slice";
+import { FilterCategory } from "../type/type";
 
 export const useProductHandlers = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export const useProductHandlers = () => {
     dispatch(deletePost(id));
   };
 
-  const handleFiltered = (value: "All" | "Favorites") => {
+  const handleFiltered = (value: FilterCategory) => {
     dispatch(setFilter(value));
   };
 
