@@ -1,6 +1,6 @@
-import { Artwork, RawArtwork } from "../type/type";
+import { Product, RawProduct } from "../type/type";
 
-export function adaptArtwork(rawData: RawArtwork): Artwork {
+export function adaptArtwork(rawData: RawProduct): Product {
   return {
     artistDisplay: rawData.artist_display,
     categoryTitles: rawData.category_titles || [],

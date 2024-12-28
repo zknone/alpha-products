@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { Artwork } from "../type/type";
+import { Product } from "../type/type";
 
-const usePaginationHandlers = (items: Artwork[], itemsPerPage: number = 10) => {
+const usePaginationHandlers = (items: Product[], itemsPerPage: number = 10) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(items.length / itemsPerPage);

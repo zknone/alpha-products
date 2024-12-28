@@ -1,6 +1,6 @@
-import { Artwork } from "../type/type";
+import { Product } from "../type/type";
 
-type ArtworkFormState = Omit<Artwork, "id" | "imageId">;
+type ArtworkFormState = Omit<Product, "id" | "imageId">;
 type FormErrors = Partial<Record<keyof ArtworkFormState, string>>;
 
 export const validateForm = (formState: ArtworkFormState): FormErrors => {
